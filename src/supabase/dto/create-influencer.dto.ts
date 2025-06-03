@@ -48,10 +48,10 @@ export class CreateInfluencerDto {
   gender: string;
 
   @IsString()
-  birthday: string; // Pode ser Date se preferir
+  birthday: string; 
 
   @IsString()
-  instagram_id?: string; // ig_id
+  instagram_id?: string; // ig_id na table influencers
 
   @IsString()
   profile_picture?: string;
