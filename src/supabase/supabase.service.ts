@@ -26,19 +26,82 @@ export class SupabaseService {
     if (email !== confirmEmail) throw new Error('Emails não coincidem.');
     if (password !== confirmPassword) throw new Error('Senhas não coincidem.');
 
-    const { data, error } = await this.supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata,
-      },
-    });
+    const { data: signUpData, error: signUpError } =
+      await this.supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name: metadata.name,
+            username: metadata.username,
+            lastName: metadata.lastName,
+            cpf: metadata.cpf,
+            instagram: metadata.instagram,
+            tiktok: metadata.tiktok,
+            phoneDDD: metadata.phoneDDD,
+            phoneNumber: metadata.phoneNumber,
+            birthDate: metadata.birthDate,
+            gender: metadata.gender,
+            state: metadata.state,
+            city: metadata.city,
+            cep: metadata.cep,
+            neighborhood: metadata.neighborhood,
+            street: metadata.street,
+            number: metadata.number,
+            complement: metadata.complement,
+            agreeTerms: metadata.agreeTerms,
+            aboutYou: metadata.aboutYou,
+          },
+        },
+      });
 
-    if (error) {
-      throw new Error(error.message);
+    if (signUpError) {
+      throw new Error(signUpError.message);
     }
 
-    return data;
+    const userId = signUpData.user?.id;
+
+    if (!userId) {
+      throw new Error('Falha ao obter ID do usuário após cadastro.');
+    }
+
+    const influencerInsertData = {
+      id: userId,
+      name: metadata.name,
+      email,
+      last_name: metadata.lastName,
+      username: metadata.instagram,
+      cep: metadata.cep,
+      address_number: metadata.number,
+      address_complement: metadata.complement,
+      ddd: metadata.phoneDDD,
+      phone_number: metadata.phoneNumber,
+      private: false,
+      address_street: metadata.street,
+      address_city: metadata.city,
+      address_state: metadata.state,
+      address_neighborhood: metadata.neighborhood,
+      gender: metadata.gender,
+      birthday: metadata.birthDate,
+    };
+
+    const { error: insertError } = await this.supabase
+      .from('influencers')
+      .insert([influencerInsertData]);
+
+    if (insertError) {
+      throw new Error('Erro ao salvar influencer: ' + insertError.message);
+    }
+
+    console.log('Dados para inserir em influencers:', influencerInsertData);
+
+    return {
+      message: 'Usuário criado com sucesso',
+      user: {
+        id: userId,
+        email,
+      },
+    };
   }
 
   async loginUser(dto: LoginUserDto) {
