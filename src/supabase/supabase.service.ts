@@ -141,7 +141,33 @@ export class SupabaseService {
     return data;
   }
 
-  update(id: string, updateSupabaseDto: UpdateSupabaseDto) {
+  async findByEmail(email: string) {
+    const { data, error } = await this.supabase
+      .from('influencers')
+      .select("*")
+      .eq('email', email)
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  }
+
+  async findByCPF(cpf: string) {
+    const { data, error } = await this.supabase
+      .from('influencers')
+      .select("*")
+      .eq('doc', cpf)
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  }
+
+  async update(id: string, updateSupabaseDto: UpdateSupabaseDto) {
     return `This action updates a #${id} supabase`;
   }
 
