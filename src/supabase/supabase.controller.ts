@@ -36,6 +36,16 @@ export class SupabaseController {
     return this.supabaseService.findOne(id);
   }
 
+  @Get('email/:email')
+  findEmail(@Param('email') email: string) {
+    return this.supabaseService.findByEmail(email);
+  }
+  
+  @Get('cpf/:cpf')
+  findCPF(@Param('cpf') cpf: string) {
+    return this.supabaseService.findByCPF(cpf);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
