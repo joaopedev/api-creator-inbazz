@@ -23,8 +23,8 @@ export class SupabaseService {
     const { email, password, confirmEmail, confirmPassword, ...metadata } =
       createSupabaseDto;
 
-    if (email !== confirmEmail) throw new Error('Emails não coincidem.');
-    if (password !== confirmPassword) throw new Error('Senhas não coincidem.');
+    // if (email !== confirmEmail) throw new Error('Emails não coincidem.');
+    // if (password !== confirmPassword) throw new Error('Senhas não coincidem.');
 
     const { data: signUpData, error: signUpError } =
       await this.supabase.auth.signUp({
@@ -93,7 +93,7 @@ export class SupabaseService {
       throw new Error('Erro ao salvar influencer: ' + insertError.message);
     }
 
-    console.log('Dados para inserir em influencers:', influencerInsertData);
+    // console.log('Dados para inserir em influencers:', influencerInsertData);
 
     return {
       message: 'Usuário criado com sucesso',
@@ -159,6 +159,19 @@ export class SupabaseService {
       .from('influencers')
       .select("*")
       .eq('doc', cpf)
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  }
+
+  async findByInstaUser(cpf: string) {
+    const { data, error } = await this.supabase
+      .from('influencers')
+      .select("*")
+      .eq('username', cpf)
 
     if (error) {
       throw new Error(error.message);
