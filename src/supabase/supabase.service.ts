@@ -23,8 +23,9 @@ export class SupabaseService {
     const { email, password, confirmEmail, confirmPassword, ...metadata } =
       createSupabaseDto;
 
-    if (email !== confirmEmail) throw new Error('Emails não coincidem.');
-    if (password !== confirmPassword) throw new Error('Senhas não coincidem.');
+    console.log(email, confirmEmail)
+    // if (email !== confirmEmail) throw new Error('Emails não coincidem.');
+    // if (password !== confirmPassword) throw new Error('Senhas não coincidem.');
 
     const { data: signUpData, error: signUpError } =
       await this.supabase.auth.signUp({
