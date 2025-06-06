@@ -4,6 +4,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user-supabase.dto';
+import { ForgotPasswordDTO } from './dto/forgot-password.ts';
 
 @Injectable()
 export class SupabaseService {
@@ -116,6 +117,11 @@ export class SupabaseService {
 
     return data;
   }
+
+  // async forgottPassword(email: ForgotPasswordDTO){
+  //   const { data, erro } = await this.supabase.auth.resetPasswordForEmail(email)  
+  
+  // }
 
   async findAll() {
     const { data, error } = await this.supabase.from('influencers').select('*');
