@@ -46,6 +46,11 @@ export class SupabaseController {
     return this.supabaseService.findByCPF(cpf);
   }
 
+  @Get('instagram/:instagram')
+  findByInstagram(@Param('instagram') instagram: string) {
+    return this.supabaseService.findByInstaUser(instagram);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
