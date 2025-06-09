@@ -11,14 +11,15 @@ import { SupabaseService } from './supabase.service';
 import { UpdateSupabaseDto } from './dto/update-supabase.dto';
 import { CreateUserDto } from './dto/create-user-supabase.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { CreateInfluencerDto } from './dto/create-influencer.dto';
 
 @Controller('supabase')
 export class SupabaseController {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   @Post()
-  create(@Body() createUserSupabaseDTo: CreateUserDto) {
-    return this.supabaseService.create(createUserSupabaseDTo);
+  create(@Body() createInfluencerDto: CreateUserDto & CreateInfluencerDto) {
+    return this.supabaseService.create(createInfluencerDto);
   }
 
   @Post('login')
