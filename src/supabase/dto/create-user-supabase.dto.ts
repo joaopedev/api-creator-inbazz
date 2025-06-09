@@ -31,7 +31,7 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  ttk_user?: string;
+  tiktok?: string;
 
   @IsBoolean()
   agreeTerms: boolean;
@@ -52,7 +52,7 @@ export class CreateUserDto {
   gender: GenereType;
 
   @IsString()
-  description: string;
+  aboutYou: string;
 
   @IsString()
   address_state: string;
