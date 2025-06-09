@@ -1,9 +1,18 @@
-import { IsAlphanumeric, IsBoolean, IsEmail, IsString } from 'class-validator';
+import {
+  IsAlphanumeric,
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { GenereType } from '../entities/genereEnum';
 
 export class CreateUserDto {
   @IsString()
   name: string;
+
+  @IsString()
+  last_name: string;
 
   @IsString()
   username: string;
@@ -20,54 +29,50 @@ export class CreateUserDto {
   @IsAlphanumeric()
   confirmPassword: string;
 
+  @IsOptional()
   @IsString()
-  instagram: string;
-
-  @IsString()
-  tiktok?: string;
+  ttk_user?: string;
 
   @IsBoolean()
   agreeTerms: boolean;
 
   @IsString()
-  cpf: string;
+  doc: string;
 
   @IsString()
-  lastName: string;
+  ddd: string;
 
   @IsString()
-  phoneDDD: string;
+  phone_number: string;
 
   @IsString()
-  phoneNumber: string;
-
-  @IsString()
-  birthDate: string;
+  birthday: string;
 
   @IsString()
   gender: GenereType;
 
   @IsString()
-  aboutYou: string;
+  description: string;
 
   @IsString()
-  state: string;
+  address_state: string;
 
   @IsString()
-  city: string;
+  address_city: string;
 
   @IsString()
   cep: string;
 
   @IsString()
-  neighborhood: string;
+  address_neighborhood: string;
 
   @IsString()
-  street: string;
+  address_street: string;
 
   @IsString()
-  number: string;
+  address_number: string;
 
+  @IsOptional()
   @IsString()
-  complement: string;
+  address_complement?: string;
 }

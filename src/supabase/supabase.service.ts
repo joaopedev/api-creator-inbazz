@@ -34,24 +34,24 @@ export class SupabaseService {
         options: {
           data: {
             name: metadata.name,
-            username: metadata.username,
-            lastName: metadata.lastName,
-            cpf: metadata.cpf,
-            instagram: metadata.instagram,
-            tiktok: metadata.tiktok,
-            phoneDDD: metadata.phoneDDD,
-            phoneNumber: metadata.phoneNumber,
-            birthDate: metadata.birthDate,
+            username: metadata.username, // OK
+            lastName: metadata.last_name, // ⚠️ antes estava metadata.lastName
+            cpf: metadata.doc,
+            instagram: metadata.username, // ou metadata.ig_id
+            tiktok: metadata.ttk_user,
+            phoneDDD: metadata.ddd,
+            phoneNumber: metadata.phone_number,
+            birthDate: metadata.birthday,
             gender: metadata.gender,
-            state: metadata.state,
-            city: metadata.city,
+            state: metadata.address_state,
+            city: metadata.address_city,
             cep: metadata.cep,
-            neighborhood: metadata.neighborhood,
-            street: metadata.street,
-            number: metadata.number,
-            complement: metadata.complement,
-            agreeTerms: metadata.agreeTerms,
-            aboutYou: metadata.aboutYou,
+            neighborhood: metadata.address_neighborhood,
+            street: metadata.address_street,
+            number: metadata.address_number,
+            complement: metadata.address_complement,
+            aboutYou: metadata.description,
+            agreeTerms: true,
           },
         },
       });
@@ -70,20 +70,20 @@ export class SupabaseService {
       id: userId,
       name: metadata.name,
       email,
-      last_name: metadata.lastName,
-      username: metadata.instagram,
+      last_name: metadata.last_name, 
+      username: metadata.username, 
       cep: metadata.cep,
-      address_number: metadata.number,
-      address_complement: metadata.complement,
-      ddd: metadata.phoneDDD,
-      phone_number: metadata.phoneNumber,
+      address_number: metadata.address_number,
+      address_complement: metadata.address_complement,
+      ddd: metadata.ddd,
+      phone_number: metadata.phone_number,
       private: false,
-      address_street: metadata.street,
-      address_city: metadata.city,
-      address_state: metadata.state,
-      address_neighborhood: metadata.neighborhood,
+      address_street: metadata.address_street,
+      address_city: metadata.address_city,
+      address_state: metadata.address_state,
+      address_neighborhood: metadata.address_neighborhood,
       gender: metadata.gender,
-      birthday: metadata.birthDate,
+      birthday: metadata.birthday,
     };
 
     const { error: insertError } = await this.supabase
@@ -94,7 +94,7 @@ export class SupabaseService {
       throw new Error('Erro ao salvar influencer: ' + insertError.message);
     }
 
-    // console.log('Dados para inserir em influencers:', influencerInsertData);
+    console.log('Dados para inserir em influencers:', influencerInsertData);
 
     return {
       message: 'Usuário criado com sucesso',
@@ -119,8 +119,8 @@ export class SupabaseService {
   }
 
   // async forgottPassword(email: ForgotPasswordDTO){
-  //   const { data, erro } = await this.supabase.auth.resetPasswordForEmail(email)  
-  
+  //   const { data, erro } = await this.supabase.auth.resetPasswordForEmail(email)
+
   // }
 
   async findAll() {
@@ -150,8 +150,8 @@ export class SupabaseService {
   async findByEmail(email: string) {
     const { data, error } = await this.supabase
       .from('influencers')
-      .select("*")
-      .eq('email', email)
+      .select('*')
+      .eq('email', email);
 
     if (error) {
       throw new Error(error.message);
@@ -163,8 +163,8 @@ export class SupabaseService {
   async findByCPF(cpf: string) {
     const { data, error } = await this.supabase
       .from('influencers')
-      .select("*")
-      .eq('doc', cpf)
+      .select('*')
+      .eq('doc', cpf);
 
     if (error) {
       throw new Error(error.message);
@@ -176,8 +176,8 @@ export class SupabaseService {
   async findByInstaUser(cpf: string) {
     const { data, error } = await this.supabase
       .from('influencers')
-      .select("*")
-      .eq('username', cpf)
+      .select('*')
+      .eq('username', cpf);
 
     if (error) {
       throw new Error(error.message);
