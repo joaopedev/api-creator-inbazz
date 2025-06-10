@@ -5,6 +5,9 @@ import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user-supabase.dto';
 import { CreateInfluencerDto } from './dto/create-influencer.dto';
+import { ResetPasswordRequestDto } from './dto/reset-password-request.dto';
+import { ForgotPasswordRequestDto } from './dto/forgot-password.ts';
+
 
 @Injectable()
 export class SupabaseService {
@@ -144,7 +147,7 @@ export class SupabaseService {
 
     if (insertError) throw new Error('Erro ao salvar influencer: ' + insertError.message);
 
-    console.log("Influencer Cadastrado:",  )
+    console.log("Influencer Cadastrado:", influencerInsertData  )
 
     return {
       message: 'Usuário criado com sucesso',
@@ -165,12 +168,57 @@ export class SupabaseService {
       throw new Error(error.message);
     }
 
+    console.log(error)
+
     return data;
   }
 
-  // async forgottPassword(email: ForgotPasswordDTO){
-  //   const { data, erro } = await this.supabase.auth.resetPasswordForEmail(email)  
-  // }
+  async loginUserWithEmail(dto: LoginUserDto) {
+    const { data, error } = await this.supabase.auth.signInWithOtp({
+      email: dto.email,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  }
+  
+  // ** Função forgottPassword agora recebe ForgotPasswordRequestDto **
+  async forgottPassword(dto: ForgotPasswordRequestDto) {
+    const { data, error } = await this.supabase.auth.resetPasswordForEmail(dto.email, {
+      redirectTo: 'creatorinbazz://reset-password'
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  }
+
+  // ** Função resetPassword agora recebe ResetPasswordRequestDto **
+  async resetPassword(dto: ResetPasswordRequestDto) {
+    // Definir a sessão com o access token
+    const { error: setSessionError } = await this.supabase.auth.setSession({
+      access_token: dto.accessToken,
+      refresh_token: '',
+    });
+
+    if (setSessionError) {
+      throw new Error(`Erro ao definir sessão: ${setSessionError.message}`);
+    }
+
+    const { data, error } = await this.supabase.auth.updateUser({
+      password: dto.newPassword,
+    });
+
+    if (error) {
+      throw new Error(`Erro ao atualizar senha: ${error.message}`);
+    }
+
+    return data;
+  }
 
   async findAll() {
     const { data, error } = await this.supabase.from('influencers').select('*');
