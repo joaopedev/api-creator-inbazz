@@ -12,8 +12,6 @@ import { UpdateSupabaseDto } from './dto/update-supabase.dto';
 import { CreateUserDto } from './dto/create-user-supabase.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateInfluencerDto } from './dto/create-influencer.dto';
-// Importe os DTOs corretos que você criou anteriormente
-
 import { ResetPasswordRequestDto } from './dto/reset-password-request.dto';
 import { ForgotPasswordRequestDto } from './dto/forgot-password.ts';
 
