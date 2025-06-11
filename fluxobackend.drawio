@@ -1,0 +1,80 @@
+<mxfile host="65bd71144e">
+    <diagram id="kRbo52QSI72a22QKD4ju" name="Página-1">
+        <mxGraphModel dx="1146" dy="866" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" style="edgeStyle=none;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="2" target="5">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="220" y="120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="12" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="2" target="13">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="220" y="180.1111111111111" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="Crud SupaBase" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="150" width="90" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Token Control" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="310" width="95" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="5" target="7">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="440" y="90" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="Create Users" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="220" y="60" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="7" target="9">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="570" y="89" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="7" value="Envio de email" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="60" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="9" target="11">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="700" y="89" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9" value="Token" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="530" y="60" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Cadastro Concluido" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="60" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="13" target="15">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="380" y="180.1111111111111" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="13" value="Esqueci a senha" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="220" y="150.00111111111107" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="15" target="17">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="530" y="180.1111111111111" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="15" value="Envio de email" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="150" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="17" target="19">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="680" y="180.1111111111111" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="17" value="Token" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="530" y="150.00111111111107" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Efetuar troca de senha" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="150.00111111111107" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
