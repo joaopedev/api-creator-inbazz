@@ -1,21 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-import { Influencers } from 'src/supabase/entities/public-influencer.entity';
-import * as nodemailer from 'nodemailer'; // Importando o Nodemailer para o envio de e-mails
-import { TokenControl, TokenType } from './entities/token-control.entity';
+import { SupabaseService } from '../supabase/supabase.service';
+import * as nodemailer from 'nodemailer';
+import { TokenType } from './entities/token-action-enum';
 
 @Injectable()
 export class TokenControlService {
-  constructor(
-    @InjectRepository(TokenControl)
-    private readonly tokenControlRepository: Repository<TokenControl>,
-  ) {}
+  constructor(private readonly supabaseService: SupabaseService) {}
 
   // Função para gerar um token de 6 dígitos
   private generateToken(): string {
-    const token = Math.floor(100000 + Math.random() * 900000); // Gera um número entre 100000 e 999999
+    const token = Math.floor(100000 + Math.random() * 900000);
     return token.toString();
   }
 
@@ -26,31 +20,24 @@ export class TokenControlService {
     tokenType: TokenType,
   ): Promise<void> {
     const transporter = nodemailer.createTransport({
-      service: 'gmail', // Você pode configurar um serviço de e-mail diferente
+      service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER, // Seu e-mail
-        pass: process.env.EMAIL_PASS, // Sua senha ou senha de app
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
-    // Determinando o caminho do arquivo XML com base no tipo de token
     let xmlFilePath: string;
     let subject: string;
 
     if (tokenType === TokenType.FORGOT_PASSWORD) {
-      // Caminho do arquivo XML para "Esqueci a Senha"
       xmlFilePath = 'src/resources/email-templates/forgot-password.xml';
       subject = 'Recuperação de Senha';
     } else {
-      // Caminho do arquivo XML para "Cadastro de Usuário"
       xmlFilePath = 'src/resources/email-templates/create-user.xml';
       subject = 'Criação de Usuário';
     }
 
-    // email noreply@inbazz.com.br
-    // senha fqwt ttpm otzy exql
-
-    // Configuração do conteúdo do e-mail
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -59,64 +46,83 @@ export class TokenControlService {
       attachments: [
         {
           filename: `${tokenType === TokenType.FORGOT_PASSWORD ? 'forgot-password' : 'create-user'}.xml`,
-          path: xmlFilePath, // Caminho para o arquivo XML
+          path: xmlFilePath,
         },
       ],
     };
 
-    // Enviar o e-mail com o anexo XML
     await transporter.sendMail(mailOptions);
   }
 
   // Função para gerar o token de recuperação de senha ou criação de usuário
   async generateTokenForUser(
-    influencer: Influencers,
+    influencerId: string,
     token_type: TokenType,
-  ): Promise<TokenControl> {
-    const token = this.generateToken(); // Gera um token numérico de 6 dígitos
+  ): Promise<any> {
+    // Busca influencer pelo Supabase
+    const influencer = await this.supabaseService.findOne(influencerId);
+    if (!influencer) {
+      throw new Error('Influencer não encontrado.');
+    }
+
+    const token = this.generateToken();
     const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 1); // Token expira em 1 hora
+    expirationDate.setHours(expirationDate.getHours() + 1);
 
-    const tokenControl = this.tokenControlRepository.create({
-      token,
-      token_type,
-      status: 'active',
-      influencer,
-      expiresAt: expirationDate,
-      payload: { email: influencer.email },
-    });
+    // Cria registro na tabela token_control via Supabase
+    const { data, error } = await this.supabaseService['supabase']
+      .from('token_control')
+      .insert([
+        {
+          token,
+          token_type,
+          status: 'active',
+          influencer_id: influencerId,
+          expiresAt: expirationDate.toISOString(),
+          payload: { email: influencer.email },
+        },
+      ])
+      .select()
+      .single();
 
-    await this.tokenControlRepository.save(tokenControl);
+    if (error) {
+      throw new Error('Erro ao salvar token: ' + error.message);
+    }
 
-    // Envia o token por e-mail
     await this.sendTokenEmail(influencer.email, token, token_type);
 
-    return tokenControl;
+    return data;
   }
 
   // Função para validar o token
-  async validateToken(token: string): Promise<TokenControl> {
-    const tokenControl = await this.tokenControlRepository.findOne({
-      where: { token, status: 'active' },
-    });
+  async validateToken(token: string): Promise<any> {
+    const { data, error } = await this.supabaseService['supabase']
+      .from('token_control')
+      .select('*')
+      .eq('token', token)
+      .eq('status', 'active')
+      .single();
 
-    if (!tokenControl) {
+    if (error || !data) {
       throw new Error('Token inválido ou expirado');
     }
 
-    // Verifica se o token expirou
-    if (new Date() > tokenControl.expiresAt) {
+    if (new Date() > new Date(data.expiresAt)) {
       throw new Error('Token expirado');
     }
 
-    return tokenControl;
+    return data;
   }
 
   // Função para marcar o token como usado
   async useToken(token: string): Promise<void> {
     const tokenControl = await this.validateToken(token);
-    tokenControl.status = 'used';
-    tokenControl.usedAt = new Date();
-    await this.tokenControlRepository.save(tokenControl);
+    const { error } = await this.supabaseService['supabase']
+      .from('token_control')
+      .update({ status: 'used', usedAt: new Date().toISOString() })
+      .eq('id', tokenControl.id);
+    if (error) {
+      throw new Error('Erro ao atualizar token: ' + error.message);
+    }
   }
 }
