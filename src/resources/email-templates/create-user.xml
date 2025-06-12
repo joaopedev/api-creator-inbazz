@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<email>
+  <subject>Criação de Usuário</subject>
+  <body>
+    <p>Olá,</p>
+    <p>O seu token de criação de usuário é: {{token}}</p>
+    <p>Utilize esse token para completar o seu processo de cadastro.</p>
+  </body>
+</email>
